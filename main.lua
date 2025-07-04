@@ -34,10 +34,13 @@ function love.load()
     vsmallFont=love.graphics.newFont("font.ttf",9)
     scoreFont=love.graphics.newFont("font.ttf",40)
 
-  
+    sound={["paddle_hit"]=love.audio.newSource("sounds/paddle_hit.wav","static"),
+            ["miss"]=love.audio.newSource("sounds/miss.wav","static"),
+            ["screen_touch"]=love.audio.newSource("sounds/screen_touch.wav","static"),
+            ["win"]=love.audio.newSource("sounds/win.wav","static")}
 
     love.window.setMode(WINDOW_WIDTH,WINDOW_HEIGHT,{
-                        resizable=false,
+                        resizable=true,
                         vsync=true, --VSYNC TO AVOID TEARING DUE TO DIFFERENCE IN FRAME RATES OF GPU AND SCREEN 
                         fullscreen =false
                         })
@@ -56,6 +59,10 @@ function love.load()
 
 
     gameState="start"
+end
+
+function love.resize(w,h)
+    push.resize(w,h)
 end
 
 
@@ -140,6 +147,8 @@ function love.update(dt)
                 ball.dy=math.random(0,100)--just randomisation
             end
 
+            sound["paddle_hit"]:play()
+
         end
 
         if ball:collides(player2) then
@@ -153,6 +162,8 @@ function love.update(dt)
                 ball.dy=math.random(0,100)--just randomisation
             end
 
+            sound["paddle_hit"]:play()
+
         end
 
         --screen boundary
@@ -160,11 +171,13 @@ function love.update(dt)
         if ball.y<=0 then
             ball.y=0
             ball.dy=-ball.dy
+            sound["screen_touch"]:play()
         end
         --bottom
         if ball.y>=VIRTUAL_HEIGHT-4 then
             ball.y=VIRTUAL_HEIGHT-4
             ball.dy=-ball.dy
+            sound["screen_touch"]:play()
         end
         
     
@@ -175,13 +188,17 @@ function love.update(dt)
             player2Score=player2Score+1
 
             --win check
-            if player2Score==1 then
+            if player2Score==3 then
                 winningPlayer=2
                 gameState="done"
+                sound["win"]:play()
             else
                 gameState="serve"
                 ball:reset()
+                sound["miss"]:play()
             end
+
+            
 
         end
         if ball.x>VIRTUAL_WIDTH then
@@ -189,13 +206,17 @@ function love.update(dt)
             player1Score=player1Score+1
 
             --win check
-            if player1Score==1 then
+            if player1Score==3 then
                 winningPlayer=1
                 gameState="done"
+                sound["win"]:play()
             else
                 gameState="serve"
                 ball:reset()
+                sound["miss"]:play()
             end
+
+            
         end
     end
     
