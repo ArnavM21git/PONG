@@ -11,11 +11,11 @@ require "Paddle"
  
  
  
-WINDOW_WIDTH=700
-WINDOW_HEIGHT=400
+WINDOW_WIDTH=800
+WINDOW_HEIGHT=500
 
-VIRTUAL_WIDTH=432
-VIRTUAL_HEIGHT=243
+VIRTUAL_WIDTH=400
+VIRTUAL_HEIGHT=250
 
 PADDLE_SPEED=150
 
@@ -29,9 +29,10 @@ function love.load()
 
     math.randomseed(os.time()) --for randomseed value for every random number as per unix epogh
 
-    largeFont=love.graphics.newFont("font.ttf",15)
-    smallFont=love.graphics.newFont("font.ttf",10)
-    scoreFont=love.graphics.newFont("font.ttf",35)
+    largeFont=love.graphics.newFont("font.ttf",20)
+    smallFont=love.graphics.newFont("font.ttf",13)
+    vsmallFont=love.graphics.newFont("font.ttf",9)
+    scoreFont=love.graphics.newFont("font.ttf",40)
 
   
 
@@ -61,18 +62,27 @@ end
 function love.draw()
     push.start()
     love.graphics.clear(0/255,00/255,50/255,1)--bg col
-    love.graphics.setFont(largeFont)
+    love.graphics.setFont(smallFont)
 
     if gameState=="start" then
-        love.graphics.printf(" Start State!",0,10,VIRTUAL_WIDTH,"center")
-    else
-        love.graphics.printf("  Play State!",0,10,VIRTUAL_WIDTH,"center")
+        love.graphics.printf("Welcome to Pong!",0,10,VIRTUAL_WIDTH,"center")
+        love.graphics.printf("Press enter to begin!",0,23,VIRTUAL_WIDTH,"center")
+    elseif gameState=="serve" then
+        love.graphics.printf("Player "..tostring(servingPlayer).."'s serve!",0,10,VIRTUAL_WIDTH,"center")
+        love.graphics.printf("Press enter to serve!",0,23,VIRTUAL_WIDTH,"center")
+    elseif gameState=="play" then
+        --nothing to display as playing
+    elseif gameState=="done" then
+        love.graphics.setFont(largeFont)
+        love.graphics.printf("Player "..tostring(winningPlayer).." won!!",0,10,VIRTUAL_WIDTH,"center")
+        love.graphics.setFont(smallFont)
+        love.graphics.printf("Press enter to restart",0,35,VIRTUAL_WIDTH,"center")
     end
 
 
     love.graphics.setFont(scoreFont)
-    love.graphics.print(tostring(player1Score),VIRTUAL_WIDTH/2-40,VIRTUAL_HEIGHT/2-90 )
-    love.graphics.print(tostring(player2Score),VIRTUAL_WIDTH/2+30,VIRTUAL_HEIGHT/2-90 )
+    love.graphics.print(tostring(player1Score),VIRTUAL_WIDTH/2-40,VIRTUAL_HEIGHT/2-50 )
+    love.graphics.print(tostring(player2Score),VIRTUAL_WIDTH/2+30,VIRTUAL_HEIGHT/2-50 )
     
     
     --1st paddle
@@ -96,10 +106,22 @@ function love.keypressed(key)
    
     elseif key=='enter' or key=="return" then
         if gameState=="start" then
+            gameState="serve"
+        elseif gameState=="serve" then
             gameState="play"
-        else
-            gameState="start"
+        elseif gameState=="done" then
+            gameState="serve"
             ball:reset()
+            
+            player1Score=0
+            player2Score=0
+
+            --next match start serve decider
+            if winningPlayer==1 then
+                servingPlayer=2
+            else
+                servingPlayer=1
+            end
         end
     end
 end
@@ -109,7 +131,7 @@ function love.update(dt)
     if gameState=="play" then
         if ball:collides(player1) then
 
-            ball.dx=-ball.dx*1.03
+            ball.dx=-ball.dx*1.07
             ball.x=player1.x+5  --5 as its the width of paddle
             
             if ball.dy<0 then
@@ -122,7 +144,7 @@ function love.update(dt)
 
         if ball:collides(player2) then
 
-            ball.dx=-ball.dx*1.03
+            ball.dx=-ball.dx*1.07
             ball.x=player2.x-5
 
             if ball.dy<0 then--same as above
@@ -145,22 +167,37 @@ function love.update(dt)
             ball.dy=-ball.dy
         end
         
-    end
-
-    --score update
-    if ball.x<0 then
-        player2Score=player2Score+1
-        servingPlayer=1
-        ball:reset()
-        gameState="start"
-    end
-    if ball.x>VIRTUAL_WIDTH then
-        player1Score=player1Score+1
-        servingPlayer=2
-        ball:reset()
-        gameState="start"
-    end
     
+
+        --score update
+        if ball.x<0 then
+            servingPlayer=1
+            player2Score=player2Score+1
+
+            --win check
+            if player2Score==1 then
+                winningPlayer=2
+                gameState="done"
+            else
+                gameState="serve"
+                ball:reset()
+            end
+
+        end
+        if ball.x>VIRTUAL_WIDTH then
+            servingPlayer=2
+            player1Score=player1Score+1
+
+            --win check
+            if player1Score==1 then
+                winningPlayer=1
+                gameState="done"
+            else
+                gameState="serve"
+                ball:reset()
+            end
+        end
+    end
     
     if love.keyboard.isDown("w") then
         player1.dy=-PADDLE_SPEED
@@ -190,9 +227,9 @@ end
 
 
 function displayFPS()
-    love.graphics.setFont(smallFont)
+    love.graphics.setFont(vsmallFont)
     love.graphics.setColor(1,0,0,1)
-    love.graphics.print("FPS:" .. tostring(love.timer.getFPS()),10,10)
+    love.graphics.print("FPS: " .. tostring(love.timer.getFPS()),10,5)
     love.graphics.setColor(1,1,1,1)
 end
  
