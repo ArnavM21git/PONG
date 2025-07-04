@@ -64,9 +64,9 @@ function love.draw()
     love.graphics.setFont(largeFont)
 
     if gameState=="start" then
-        love.graphics.printf(" Start State!",0,10,VIRTUAL_WIDTH,"center")
+        love.graphics.printf(" Start state!",0,10,VIRTUAL_WIDTH,"center")
     else
-        love.graphics.printf("  Play State!",0,10,VIRTUAL_WIDTH,"center")
+        love.graphics.printf("  Play state!",0,10,VIRTUAL_WIDTH,"center")
     end
 
 
@@ -144,21 +144,6 @@ function love.update(dt)
             ball.y=VIRTUAL_HEIGHT-4
             ball.dy=-ball.dy
         end
-        
-    end
-
-    --score update
-    if ball.x<0 then
-        player2Score=player2Score+1
-        servingPlayer=1
-        ball:reset()
-        gameState="start"
-    end
-    if ball.x>VIRTUAL_WIDTH then
-        player1Score=player1Score+1
-        servingPlayer=2
-        ball:reset()
-        gameState="start"
     end
     
     
