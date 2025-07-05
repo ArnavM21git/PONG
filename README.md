@@ -27,7 +27,7 @@
 
 ---
 
-##<samp> 🎮 Controls</samp>
+## <samp> 🎮 Controls</samp>
 
 | Player | Key        | Action         |
 |--------|------------|----------------|
@@ -42,7 +42,7 @@
 - [Love2D 11.x](https://love2d.org/)
 - A system that supports Lua 5.1+
 
-## 📄 License 
+## <samp> 📄 License </samp>
 This project is licensed under the MIT License.
 - Copyright (c) 2018 Ulysse Ramage
 - Copyright (c) 2010-2013 Matthias Richter
