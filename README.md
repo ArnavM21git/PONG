@@ -44,6 +44,8 @@
 
 ## 📄 License 
 This project is licensed under the MIT License.
+- Copyright (c) 2018 Ulysse Ramage
+- Copyright (c) 2010-2013 Matthias Richter
 
 
 
