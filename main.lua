@@ -188,7 +188,7 @@ function love.update(dt)
             player2Score=player2Score+1
 
             --win check
-            if player2Score==3 then
+            if player2Score==10 then
                 winningPlayer=2
                 gameState="done"
                 sound["win"]:play()
@@ -206,7 +206,7 @@ function love.update(dt)
             player1Score=player1Score+1
 
             --win check
-            if player1Score==3 then
+            if player1Score==10 then
                 winningPlayer=1
                 gameState="done"
                 sound["win"]:play()
