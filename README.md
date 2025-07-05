@@ -42,6 +42,9 @@
 - [Love2D 11.x](https://love2d.org/)
 - A system that supports Lua 5.1+
 
+## 📄 License 
+This project is licensed under the MIT License.
+
 
 
 
