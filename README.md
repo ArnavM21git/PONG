@@ -29,11 +29,28 @@
 
 ## <samp> 🎮 Controls</samp>
 
-| Player | Key        | Action         |
-|--------|------------|----------------|
-| Player 1 | `W` / `S`    | Move Up / Down |
-| Player 2 | `Up` / `Down` | Move Up / Down |
-| Game     | `Enter`      | Start / Restart |
+<table>
+   <tr>
+    <th align="center">Player</th>
+    <th align="center">Key</th>
+    <th align="center">Action</th>
+  </tr>
+  <tr align="center">
+    <td>Player 1</td>
+    <td>W/S</td>
+    <td>Move Up/Down</td>
+  </tr>
+  <tr align="center">
+    <td>Player 2</td>
+    <td>Up/Down</td>
+    <td>Move Up/Down</td>
+  </tr>
+  <tr align="center">
+    <td>Game States</td>
+    <td>Enter</td>
+    <td>Start/Reset</td>
+  </tr>
+</table>
 
 ---
 
