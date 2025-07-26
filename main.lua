@@ -63,7 +63,7 @@ end
 
 function love.resize(w,h)
     push.resize(w,h)
-end
+end--so as to make it draggable
 
 
 function love.draw()
